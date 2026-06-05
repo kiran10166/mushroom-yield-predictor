@@ -332,6 +332,85 @@ mushroom-yield-predictor/
 └── requirements.txt
 ```
 
+# Exploratory Data Analysis (EDA)
+
+## Objective
+
+The purpose of this analysis is to explore the relationships between environmental sensor measurements and mushroom yield. The analysis helps identify patterns in the data before building machine learning models.
+
+## Dataset Features
+
+The following features were analyzed:
+
+* `temperature_c` – Temperature in degrees Celsius
+* `humidity_pct` – Relative humidity percentage
+* `co2_ppm` – Carbon dioxide concentration in parts per million
+* `yield_kg` – Mushroom yield in kilograms
+
+## Visualizations
+
+### 1. Correlation Heatmap
+
+A Pearson correlation heatmap was generated to visualize the strength and direction of relationships between all numerical features.
+
+Output:
+
+* `reports/figures/corr_heatmap.png`
+
+### 2. Scatter Plots
+
+Scatter plots were created to examine the relationship between yield and each environmental variable:
+
+* Humidity vs Yield
+* Temperature vs Yield
+* CO₂ vs Yield
+
+Output:
+
+* `reports/figures/scatter_yield.png`
+
+## Tools Used
+
+* Python
+* Pandas
+* Matplotlib
+
+## Running the Analysis
+
+Activate the virtual environment:
+
+```bash
+venv\Scripts\activate
+```
+
+Run the EDA script:
+
+```bash
+python src/eda.py
+```
+
+## Generated Files
+
+```text
+reports/
+├── eda_notes.md
+└── figures/
+    ├── corr_heatmap.png
+    └── scatter_yield.png
+```
+
+## Observations
+
+* Correlation analysis helps identify relationships among variables.
+* Scatter plots provide a visual understanding of trends between sensor readings and mushroom yield.
+* Findings from EDA can guide feature selection and model development.
+
+## Limitations
+
+* Correlation does not imply causation.
+* Pearson correlation only captures linear relationships.
+* Outliers may influence correlation values and visual interpretations.
+
 
 
 
