@@ -411,6 +411,49 @@ reports/
 * Pearson correlation only captures linear relationships.
 * Outliers may influence correlation values and visual interpretations.
 
+mushroom-yield-predictor/
+│
+├── data/
+│   ├── raw/
+│   │   ├── .gitkeep
+│   │   └── polyhouse_sensors.csv
+│   │
+│   ├── interim/
+│   │   ├── 01_loaded.csv
+│   │   └── 02_cleaned.parquet
+│   │
+│   └── processed/
+│       └── .gitkeep
+│
+├── docs/
+│   └── cleaning_log.md
+│
+├── models/
+│
+├── notebooks/
+│   ├── .gitkeep
+│   └── smoke_test.py
+│
+├── reports/
+│   ├── data_quality.md
+│   ├── eda_notes.md              ← NEW
+│   │
+│   └── figures/                  ← NEW
+│       ├── corr_heatmap.png      ← NEW
+│       └── scatter_yield.png     ← NEW
+│
+├── src/
+│   ├── generate_data.py
+│   ├── ingest.py
+│   ├── clean_data.py
+│   ├── data_quality.py
+│   ├── smoke_test.py
+│   └── eda.py                    ← NEW
+│
+├── .gitignore
+├── README.md
+└── requirements.txt
+
 
 
 
