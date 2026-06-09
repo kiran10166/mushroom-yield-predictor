@@ -600,6 +600,88 @@ The following checks are performed after feature engineering:
 
 For learning purposes, the scaler is currently fitted on the full cleaned dataset.
 
+## Chronological Train/Test Split
+
+### Objective
+
+To prepare the mushroom yield dataset for machine learning by creating a chronological train/test split while preventing data leakage.
+
+### Methodology
+
+1. Loaded the cleaned dataset from:
+
+   `data/interim/02_cleaned.parquet`
+
+2. Sorted records by timestamp.
+
+3. Applied an 80/20 chronological split:
+
+   * First 80% of records → Training set
+   * Last 20% of records → Test set
+
+4. Verified that no test record occurred before the training cutoff date.
+
+5. Applied MinMaxScaler:
+
+   * Fitted only on training data
+   * Applied to both training and test data
+
+### Features Used
+
+* temperature_c
+* humidity_pct
+* co2_ppm
+
+### Target Variable
+
+* yield_kg
+
+### Leakage Prevention
+
+The following assertion verifies that all test observations occur after the training period:
+
+```python
+assert test_start_date > train_end_date
+```
+
+### Saved Artifacts
+
+#### Model Assets
+
+* models/minmax_scaler.joblib
+
+#### Processed Data
+
+* data/processed/train.csv
+* data/processed/test.csv
+
+#### NumPy Arrays
+
+* data/processed/X_train.npy
+* data/processed/X_test.npy
+* data/processed/y_train.npy
+* data/processed/y_test.npy
+
+### Output Information Logged
+
+The script logs:
+
+* Train and test row counts
+* Train period dates
+* Test period dates
+* Split cutoff date
+* Leakage validation status
+* X and y array shapes
+
+### Execution
+
+Run the script using:
+
+```bash
+python src/split_test.py
+```
+
+
 
 
 
