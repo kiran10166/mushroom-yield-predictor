@@ -640,15 +640,13 @@ To prepare the mushroom yield dataset for machine learning by creating a chronol
 
 The following assertion verifies that all test observations occur after the training period:
 
-```python
-assert test_start_date > train_end_date
-```
+`assert test_start_date > train_end_date`
 
 ### Saved Artifacts
 
 #### Model Assets
 
-* models/minmax_scaler.joblib
+* models/minmax_scaler_train.joblib
 
 #### Processed Data
 
@@ -677,17 +675,22 @@ The script logs:
 
 Run the script using:
 
-```bash
-python src/split_test.py
-```
+`python src/split_test.py`
 
+### Timeline Diagram
 
+The chronological split can be visualized as:
 
+|------------------- Training Set (80%) -------------------|------ Test Set (20%) ------|
 
+2024-01-01                                            2024-10-18              2024-10-19                    2024-12-30
+                                                        ↑
+                                                   Split Cutoff
 
+This timeline illustrates the separation between training and test windows and confirms that future observations are not used during model training.
 
+### Seasonality Consideration
 
+Because the dataset is split chronologically, the test period represents future observations that the model has not seen during training. If the average value of `yield_kg` in the test period differs significantly from the training period, evaluation metrics may decrease. Such differences can occur due to seasonality, environmental changes, or shifts in growing conditions over time.
 
-
-
-
+This behavior is expected in real-world forecasting scenarios and does not indicate data leakage. Instead, it reflects the model's ability to generalize to future data under changing conditions.
