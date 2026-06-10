@@ -756,7 +756,7 @@ Since all features were scaled using MinMaxScaler, coefficient magnitudes can be
 ### Execution
 
 ```bash
-python src/train_linear_model.py
+python src/LR_model.py
 ```
 
 ### Baseline Assessment
