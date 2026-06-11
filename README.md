@@ -912,7 +912,7 @@ If clear patterns remain:
 ### Execution
 
 ```bash
-python src/linear_diagnostics.py
+python src/Residual_Analysis.py
 ```
 
 ### Output Summary
