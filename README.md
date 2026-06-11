@@ -780,3 +780,150 @@ The script prints:
 - Saved artifact locations
 
 The resulting model serves as a baseline benchmark for future machine learning experiments on mushroom yield prediction.
+
+
+## Linear Regression Diagnostics
+
+### Objective
+
+Evaluate the baseline Linear Regression model using residual analysis to identify bias, heteroscedasticity, or nonlinear patterns not captured by the model.
+
+### Residual Definition
+
+Residuals were calculated as:
+
+```text
+Residual = Actual Yield − Predicted Yield
+```
+
+Interpretation:
+
+- Positive residual → Model underpredicted yield.
+- Negative residual → Model overpredicted yield.
+- Residual close to zero → Accurate prediction.
+
+### Methodology
+
+1. Loaded the trained Linear Regression model.
+2. Loaded `X_test` and `y_test`.
+3. Generated test predictions.
+4. Computed residuals:
+
+```python
+residuals = y_test - pred_test
+```
+
+5. Saved residual values for inspection.
+6. Created diagnostic plots to evaluate model behavior.
+
+### Diagnostic Plots
+
+#### 1. Residuals vs Predicted Yield
+
+Purpose:
+
+- Detect systematic prediction bias.
+- Check whether residuals are centered around zero.
+- Identify heteroscedasticity (changing variance).
+
+Output:
+
+```text
+reports/figures/residuals_vs_predicted.png
+```
+
+#### 2. Residuals vs Humidity
+
+Purpose:
+
+- Determine whether humidity effects are fully captured by the linear model.
+- Detect nonlinear relationships.
+
+Output:
+
+```text
+reports/figures/residuals_vs_humidity.png
+```
+
+#### 3. Residuals vs Temperature
+
+Purpose:
+
+- Evaluate model performance across temperature levels.
+- Identify potential curvature or missing interactions.
+
+Output:
+
+```text
+reports/figures/residuals_vs_temperature.png
+```
+
+### Saved Artifacts
+
+#### Residual Dataset
+
+```text
+data/processed/residuals_linear.csv
+```
+
+Columns:
+
+| Column | Description |
+|----------|-------------|
+| actual_yield | Actual observed yield |
+| predicted_yield | Model prediction |
+| residual | Actual − Predicted |
+
+#### Diagnostic Figures
+
+```text
+reports/figures/residuals_vs_predicted.png
+reports/figures/residuals_vs_humidity.png
+reports/figures/residuals_vs_temperature.png
+```
+
+### Diagnostic Interpretation Guide
+
+#### Good Signs
+
+- Residuals randomly scattered around zero.
+- No obvious trend or curve.
+- Similar spread across all predictions.
+
+#### Potential Problems
+
+- Funnel-shaped pattern → Heteroscedasticity.
+- Curved pattern → Nonlinear relationship.
+- Large clusters away from zero → Systematic bias.
+
+### Recommendation
+
+If residuals appear randomly distributed around zero, the Linear Regression model is an acceptable baseline.
+
+If clear patterns remain:
+
+- Add engineered features.
+- Explore interaction terms.
+- Evaluate nonlinear models such as:
+  - Random Forest Regression
+  - Gradient Boosting Regression
+  - XGBoost
+
+### Execution
+
+```bash
+python src/linear_diagnostics.py
+```
+
+### Output Summary
+
+The script:
+
+- Loads the trained model.
+- Predicts test-set yield.
+- Calculates residuals.
+- Saves residual values.
+- Generates diagnostic plots.
+- Prints residual samples and file locations.
+
+This diagnostic phase validates the quality of the baseline Linear Regression model before moving to more advanced machine learning approaches.
