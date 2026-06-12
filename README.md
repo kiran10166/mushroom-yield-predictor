@@ -963,5 +963,5 @@ Output:
 ### Execution
 
 ```bash
-python src/train_random_forest.py
+python src/Random_Forest.py
 ```
