@@ -927,3 +927,41 @@ The script:
 - Prints residual samples and file locations.
 
 This diagnostic phase validates the quality of the baseline Linear Regression model before moving to more advanced machine learning approaches.
+
+## Random Forest Regression
+
+### Objective
+
+Train a Random Forest Regressor and compare its performance against the Linear Regression baseline.
+
+### Features
+
+- temperature_c
+- humidity_pct
+- co2_ppm
+
+### Evaluation Metrics
+
+- MAE
+- RMSE
+- R²
+
+### Feature Importance
+
+Random Forest estimates feature importance using decision tree splits.
+
+Output:
+
+- reports/figures/rf_importance.png
+
+### Saved Artifacts
+
+- models/random_forest.joblib
+- reports/metrics_random_forest.json
+- reports/random_forest_comparison.md
+
+### Execution
+
+```bash
+python src/train_random_forest.py
+```
