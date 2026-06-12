@@ -1004,3 +1004,137 @@ python src/cv_reports.py
 - Lower MAE indicates better predictive accuracy.
 - Lower standard deviation indicates more consistent performance across folds.
 - CV results are compared against hold-out test metrics to identify potential overfitting.
+
+# Hyperparameter Tuning with GridSearchCV
+
+## Objective
+
+To improve Random Forest model performance by tuning key hyperparameters using time-aware cross-validation while preventing data leakage from future observations.
+
+## Methodology
+
+### Data Used
+
+The following preprocessed datasets were loaded:
+
+* `data/processed/X_train.npy`
+* `data/processed/X_test.npy`
+* `data/processed/y_train.npy`
+* `data/processed/y_test.npy`
+
+Only the training data was used during hyperparameter tuning.
+
+### Cross-Validation Strategy
+
+A `TimeSeriesSplit` cross-validator with 3 splits was used to preserve chronological ordering of observations.
+
+This approach ensures that:
+
+* Earlier observations are used to predict later observations.
+* Future information is never used during training.
+* Data leakage is prevented.
+
+### Hyperparameter Grid
+
+A small parameter grid was selected to keep runtime reasonable while exploring meaningful model configurations.
+
+| Parameter          | Values Tested | Purpose                                                                                                  |
+| ------------------ | ------------- | -------------------------------------------------------------------------------------------------------- |
+| `n_estimators`     | 50, 100, 200  | Controls the number of trees in the forest. More trees generally improve stability but increase runtime. |
+| `max_depth`        | None, 8, 16   | Limits tree depth and helps control model complexity.                                                    |
+| `min_samples_leaf` | 1, 3, 5       | Controls minimum observations per leaf node and helps reduce overfitting.                                |
+
+Total parameter combinations evaluated:
+
+```text
+3 × 3 × 3 = 27 combinations
+```
+
+### Grid Search Configuration
+
+The search was performed using:
+
+* `GridSearchCV`
+* `TimeSeriesSplit(n_splits=3)`
+* Scoring metric: Mean Absolute Error (MAE)
+* `refit=True`
+* `n_jobs=-1`
+
+The model was automatically refit using the best parameter combination found during cross-validation.
+
+## Evaluation Procedure
+
+1. Perform Grid Search using training data only.
+2. Select the best parameter combination based on cross-validated MAE.
+3. Refit the best estimator on the full training dataset.
+4. Evaluate the tuned model once on the held-out test dataset.
+5. Record final test metrics.
+
+The test set was not used during tuning.
+
+## Results
+
+The Grid Search produced:
+
+* Best parameter combination
+* Best cross-validation MAE
+* Final test MAE
+* Final test RMSE
+* Final test R² score
+
+Runtime was also recorded to ensure the search remained practical for a standard laptop environment.
+
+## Saved Artifacts
+
+### Tuned Model
+
+Best Random Forest model:
+
+```text
+models/random_forest_tuned.joblib
+```
+
+### Best Parameters
+
+Optimal hyperparameters:
+
+```text
+models/rf_best_params.json
+```
+
+### Search Transparency
+
+First rows of GridSearchCV results:
+
+```text
+reports/gridsearch_cv_results_head.csv
+```
+
+### Performance Summary
+
+Summary of tuning results and evaluation metrics:
+
+```text
+reports/gridsearch_summary.csv
+```
+
+## Validation Checks
+
+The following validation criteria were satisfied:
+
+* TimeSeriesSplit used instead of random K-Fold.
+* Hyperparameter search performed exclusively on training data.
+* Mean Absolute Error used as the optimization metric.
+* Best estimator automatically refit after tuning.
+* Test set evaluated only once after model selection.
+* Best parameters saved for reproducibility.
+* Model artifact saved for deployment and future evaluation.
+* Search results exported for mentor review and transparency.
+
+## Key Findings
+
+* Time-aware cross-validation provided a realistic estimate of future performance.
+* Hyperparameter tuning explored multiple Random Forest configurations efficiently.
+* The selected model represents the best-performing configuration within the defined search space.
+* Exported artifacts allow full reproducibility of tuning results and model evaluation.
+* Search runtime remained practical for an internship-scale machine learning project.
